@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-SELF_DIR=$(cd "$(dirname "$(stat -f %Y "$0")")"; pwd -P)
+self_dir=$(cd "$(dirname "$(stat -f %Y "$0")")"; pwd -P)
 
-if [ -f $SELF_DIR/$1.sh ]; then
-    $SELF_DIR/$1.sh "${@:2}"
+if [ -f $self_dir/$1.sh ]; then
+    $self_dir/$1.sh "${@:2}"
     exit $?
 else
     echo "Script not found: $1" >&2
