@@ -81,7 +81,7 @@ fi
 command="cd $webroot;git reset --hard HEAD;"
 command+="git pull 'https://$ghuser:$ghpass@github.com/EncoreMultimedia/$repo.git';"
 
-[ -z "$remotedrush" ] && REMOTEDRUSH=drush
+[ -z "$remotedrush" ] && remotedrush=drush
 [ -n "$dcc" ] && command+="$remotedrush cc all;"
 [ -n "$dcr" ] && command+="$remotedrush cr;"
 [ -n "$updb" ] && command+="$remotedrush updb -y;"

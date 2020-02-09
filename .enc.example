@@ -7,7 +7,7 @@ ghpass=''
 # the docroot / webroot on the remote server
 webroot=public_html
 
-# the command to execute drush on the remote server
+# [optional] the command to execute drush on the remote server
 remotedrush=drush
 
 # IP or hostname of remote server
