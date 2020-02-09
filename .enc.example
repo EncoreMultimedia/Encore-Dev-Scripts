@@ -13,8 +13,8 @@ remotedrush=drush
 # IP or hostname of remote server
 remotehost=
 
-# GitHub repo NAME ONLY
-repo=Encore-Dev-Scripts
+# GitHub repo; user (or org) name and repo name, separated by slash
+repo=EncoreMultimedia/Encore-Dev-Scripts
 
 # SSH username to use to connect to remote server
 sshuser=
