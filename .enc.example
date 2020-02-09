@@ -1,0 +1,23 @@
+# GitHub username
+ghuser=
+
+# GitHub password, quoted in case of special chars
+ghpass=''
+
+# the docroot / webroot on the remote server
+webroot=public_html
+
+# the command to execute drush on the remote server
+remotedrush=drush
+
+# IP or hostname of remote server
+remotehost=
+
+# GitHub repo NAME ONLY
+repo=Encore-Dev-Scripts
+
+# SSH username to use to connect to remote server
+sshuser=
+
+# SSH password, exported so sshpass can see it
+export SSHPASS=
