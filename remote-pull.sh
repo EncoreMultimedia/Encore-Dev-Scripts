@@ -48,13 +48,17 @@ while getopts ':cruh' OPT; do
             updb="YES" ;;
         h )
             echo "Usage:"
-            echo "    remote-pull [options]"
+            echo "    remote-pull [options] [env]"
             echo ""
             echo "Options:"
             echo "    -c    (Drupal 7) Clears cache with 'drush cc all' after pull"
             echo "    -r    (Drupal 8) Clears cache with 'drush cr' after pull"
             echo "    -u    Runs 'drush updb -y' after pull"
             echo "    -h    this information"
+            echo ""
+            echo "Parameters:"
+            echo "    env   This is used to specify a configuration with a specific"
+            echo "              name, such as live, dev, staging, etc."
             exit 0 ;;
         \? )
             echo "remote-pull: Invalid option: -$OPTARG" >&2
