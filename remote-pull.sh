@@ -69,12 +69,12 @@ shift $((OPTIND -1))
 
 config_name=".enc"
 [ -n "$1" ] && config_name+="-$1"
-enc_path=$(_rfind $config_name)
+enc_path=$(_rfind "$config_name")
 
 if [ -f "$enc_path" ]; then
     # Found credentials file so let user know and import those vars
     echo "Using configuration found at: $(cd "$(dirname "$enc_path")"; pwd -P)/$(basename "$enc_path")"
-    source $enc_path
+    source "$enc_path"
 elif [ -z "$webroot" ]; then
     # Did not find credentials file and the vars aren't set
     echo "remote-pull: Configuration file '$config_name' not found in any parent directory" >&2
@@ -90,4 +90,4 @@ command+="git pull 'https://$ghuser:$ghpass@github.com/$repo.git';"
 [ -n "$dcr" ] && command+="$remotedrush cr;"
 [ -n "$updb" ] && command+="$remotedrush updb -y;"
 
-sshpass -e ssh $sshuser@$remotehost $command
+sshpass -e ssh "$sshuser@$remotehost" "$command"
