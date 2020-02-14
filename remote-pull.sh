@@ -1,23 +1,6 @@
 #!/usr/bin/env bash
 
-_rfind () {
-    needle=$1
-    cwd=$PWD
-    path=.
-
-    while [ "$cwd" != "$(dirname "$cwd")" ]; do
-        if [ -e "$cwd/$needle" ]; then
-            echo $path/$needle
-            return 0
-        else
-            path=../$path
-            cwd="$(dirname "$cwd")"
-        fi
-    done
-
-    echo ""
-    return 1
-}
+source "$(dirname $0)/_rfind.inc"
 
 ### Check dependencies
 
@@ -90,4 +73,6 @@ command+="git pull 'https://$ghuser:$ghpass@github.com/$ghrepo.git';"
 [ -n "$dcr" ] && command+="$remotedrush cr;"
 [ -n "$updb" ] && command+="$remotedrush updb -y;"
 
+echo "Pulling latest code to $sshuser@$remotehost:$webroot ... "
 sshpass -e ssh "$sshuser@$remotehost" "$command"
+echo "done!"

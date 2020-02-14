@@ -17,5 +17,5 @@ else
     sudo ln -s $self_dir/enc /usr/local/bin/enc
 fi
 
-echo -e "\n# Added by Encore-Dev-Scripts\n[ -f $self_dir/bash_completion ] && . $self_dir/bash_completion\n" >> ~/.bashrc
-. $self_dir/bash_completion && echo "Bash command completion installed and activated."
+echo -e "\n# Added by Encore-Dev-Scripts\n[ -f $self_dir/bash_completion ] && source $self_dir/bash_completion\n" >> ~/.bashrc
+source $self_dir/bash_completion && echo "Bash command completion installed and activated."

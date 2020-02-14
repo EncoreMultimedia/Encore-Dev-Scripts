@@ -1,32 +1,42 @@
 #!/usr/bin/env bash
 
-_rfind () {
-    needle=$1
-    cwd=$PWD
-    path=.
-
-    while [ "$cwd" != "$(dirname "$cwd")" ]; do
-        if [ -e "$cwd/$needle" ]; then
-            echo $path/$needle
-            return 0
-        else
-            path=../$path
-            cwd="$(dirname "$cwd")"
-        fi
-    done
-
-    echo ""
-    return 1
-}
+source "$(dirname $0)/_rfind.inc"
 
 config_name=".enc"
 [ -n "$1" ] && config_name+="-$1"
 
+repo=$(_rfind ".git/")
+
+if [ -n "$repo" ]; then
+    echo "You are in a Git repository!"
+    echo "It is recommended to put this file outside of a Git repository or"
+    echo -e "add it to your .gitignore file.\n"
+
+    PS3="Choose an option: "
+    options=("Add to .gitignore" "Create in parent directory" "Abort")
+    select opt in "${options[@]}"; do
+        case $opt in
+            "Add to .gitignore")
+                printf "Great! I will add '%s' to %s/.gitignore when we're done.\n\n" "$config_name" "$(cd "$(dirname "$repo")"; pwd -P)"
+                add_gitignore="yes"
+                break ;;
+            "Create in parent directory")
+                PWD="$(dirname "$(cd "$(dirname "$repo")"; pwd -P)")"
+                echo -e "Ok, going up to the parent directory.\n"
+                break ;;
+            "Abort")
+                echo "Aborting. Run this command again from a directory outside of a Git repo." >&2
+                exit 1 ;;
+            *) echo "Invalid option" ;;
+        esac
+    done
+fi
+
 # As macOS bash doesn't support `read -i` which is needed below, we do this:
 if [ -f $PWD/$config_name ]; then
-    echo "File '$config_name' will be overwritten in this directory: $PWD"
+    echo "File '$config_name' EXISTS and will be overwritten in: $(cd "$PWD"; pwd -P)"
 else
-    echo "File '$config_name' will be created in this directory: $PWD"
+    echo "File '$config_name' will be created in: $(cd "$PWD"; pwd -P)"
 fi
 
 # while : ; do
@@ -53,22 +63,6 @@ fi
 #         echo ""
 #     fi
 # done
-
-repo=$(_rfind ".git/")
-
-if [ -n "$repo" ]; then
-    echo "You are in a Git repository!"
-    echo "It is recommended to put this file in a directory not committed to Git,"
-    echo "or add it to your .gitignore file."
-    read -rp "Type 'y' to add this to your .gitignore, or anything else to abort: " add_gitignore
-
-    if [ "$add_gitignore" = 'y' ] || [ "$add_gitignore" = 'Y' ]; then
-        printf "Great! I will add '%s' to %s/.gitignore when we're done. " "$config_name" "$(cd "$(dirname "$repo")"; pwd -P)"
-    else
-        echo "Aborting. Run this command again from a directory outside of a Git repo." >&2
-        exit 1
-    fi
-fi
 
 read -rp "Enter GitHub username: " ghuser
 
