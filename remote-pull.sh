@@ -83,7 +83,7 @@ elif [ -z "$webroot" ]; then
 fi
 
 command="cd $webroot;git reset --hard HEAD;"
-command+="git pull 'https://$ghuser:$ghpass@github.com/$repo.git';"
+command+="git pull 'https://$ghuser:$ghpass@github.com/$ghrepo.git';"
 
 [ -z "$remotedrush" ] && remotedrush=drush
 [ -n "$dcc" ] && command+="$remotedrush cc all;"
