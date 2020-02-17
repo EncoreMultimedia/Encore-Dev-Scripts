@@ -26,7 +26,8 @@ for example, a live server, dev server, staging server, or whatever you want.
 
 ### Scripts
 - `enc get-db [env]`\
-    Downloads remote database to your machine as a .sql.gz file.\
+    Downloads remote database to your machine as a .sql.gz file in the same
+    directory as the config file (so as to be outside of git).\
     *Requires a `.enc` config file to exist. See the `[env]` note above.*
 - `enc import-from-gh [env]`\
     Creates all the files needed to run the site on your local machine
@@ -40,7 +41,7 @@ for example, a live server, dev server, staging server, or whatever you want.
     *Requires a `.enc` config file to exist. See the `[env]` note above.*
 - `enc remote-init [env]`\
     Creates a `.enc` (or `.enc-$env`) configuration file in the directory
-    where you run the script. This file will be used by the `remote-pull` script.\
+    where you run the script.\
     *See the `[env]` note above.*
 - `enc remote-pull [options] [env]`\
     Logs into a configured remote server for the project whose path you're in,
