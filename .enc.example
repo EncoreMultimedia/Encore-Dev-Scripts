@@ -20,7 +20,7 @@ remotedrush=drush
 remotehost=
 
 # GitHub repo; user (or org) name and repo name, separated by slash
-repo=EncoreMultimedia/Encore-Dev-Scripts
+ghrepo=EncoreMultimedia/Encore-Dev-Scripts
 
 # SSH username to use to connect to remote server
 sshuser=
