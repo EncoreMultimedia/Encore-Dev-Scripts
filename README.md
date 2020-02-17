@@ -25,6 +25,11 @@ Using this option, you can have multiple configuration files corresponding to,
 for example, a live server, dev server, staging server, or whatever you want.
 
 ### Scripts
+
+- `enc init [env]`\
+    Creates a `.enc` (or `.enc-$env`) configuration file in the directory
+    where you run the script.\
+    *See the `[env]` note above.*
 - `enc get-db [env]`\
     Downloads remote database to your machine as a .sql.gz file in the same
     directory as the config file (so as to be outside of git).\
@@ -39,10 +44,6 @@ for example, a live server, dev server, staging server, or whatever you want.
     by copying them all from a remote server.\
     Run this inside a fresh project directory of your making.\
     *Requires a `.enc` config file to exist. See the `[env]` note above.*
-- `enc remote-init [env]`\
-    Creates a `.enc` (or `.enc-$env`) configuration file in the directory
-    where you run the script.\
-    *See the `[env]` note above.*
 - `enc remote-pull [options] [env]`\
     Logs into a configured remote server for the project whose path you're in,
     and runs a `git pull` as well as other optional commands.\
