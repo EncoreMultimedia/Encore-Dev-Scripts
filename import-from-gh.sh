@@ -30,7 +30,7 @@ elif [ -z "$webroot" ]; then
     exit 1
 fi
 
-git clone "https://$ghuser:$ghpass@github.com/$repo.git" public_html
+git clone "https://$ghuser:$ghpass@github.com/$ghrepo.git" public_html
 
 if [[ $sitetype == drupal* ]]; then
     mkdir public_html/sites/default/tmp
