@@ -1,9 +1,11 @@
 #!/bin/bash
+# shellcheck disable=SC2154
 
+# shellcheck disable=SC2034
 my_needed_commands="ssh sshpass scp"
 
-source "$(dirname $0)/_depcheck.inc"
-source "$(dirname $0)/_rfind.inc"
+source "$(dirname "$0")/_depcheck.inc"
+source "$(dirname "$0")/_rfind.inc"
 
 config_name=".enc"
 [ -n "$1" ] && config_name+="-$1"
@@ -11,7 +13,7 @@ enc_path=$(_rfind "$config_name")
 
 if [ -f "$enc_path" ]; then
     # Found credentials file so let user know and import those vars
-    echo "Using configuration found at: $(cd "$(dirname "$enc_path")"; pwd -P)/$(basename "$enc_path")"
+    echo "Using configuration found at: $(cd "$(dirname "$enc_path")" || exit; pwd -P)/$(basename "$enc_path")"
     source "$enc_path"
 elif [ -z "$webroot" ]; then
     # Did not find credentials file and the vars aren't set
@@ -36,6 +38,6 @@ fi
 
 echo "Getting database from $sshuser@$remotehost:$webroot ... "
 sshpass -e ssh "$sshuser@$remotehost" "cd $webroot;$dumpcommand | gzip > ../db-$envname.sql.gz"
-sshpass -e scp "$sshuser@$remotehost:db-$envname.sql.gz" "$(cd "$(dirname "$enc_path")"; pwd -P)"
+sshpass -e scp "$sshuser@$remotehost:db-$envname.sql.gz" "$(cd "$(dirname "$enc_path")" || exit; pwd -P)"
 sshpass -e ssh "$sshuser@$remotehost" "rm db-$envname.sql.gz"
-echo "Saved to: $(cd "$(dirname "$enc_path")"; pwd -P)/db-$envname.sql.gz"
+echo "Saved to: $(cd "$(dirname "$enc_path")" || exit; pwd -P)/db-$envname.sql.gz"

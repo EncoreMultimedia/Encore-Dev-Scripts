@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2154
 
+# shellcheck disable=SC2034
 my_needed_commands="ssh sshpass"
 
-source "$(dirname $0)/_depcheck.inc"
-source "$(dirname $0)/_rfind.inc"
+source "$(dirname "$0")/_depcheck.inc"
+source "$(dirname "$0")/_rfind.inc"
 
 ### Parse args
 
@@ -42,7 +44,7 @@ enc_path=$(_rfind "$config_name")
 
 if [ -f "$enc_path" ]; then
     # Found credentials file so let user know and import those vars
-    echo "Using configuration found at: $(cd "$(dirname "$enc_path")"; pwd -P)/$(basename "$enc_path")"
+    echo "Using configuration found at: $(cd "$(dirname "$enc_path")" || exit; pwd -P)/$(basename "$enc_path")"
     source "$enc_path"
 elif [ -z "$webroot" ]; then
     # Did not find credentials file and the vars aren't set

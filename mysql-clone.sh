@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC2034
 my_needed_commands="mysql mysqldump"
 
-source "$(dirname $0)/_depcheck.inc"
+source "$(dirname "$0")/_depcheck.inc"
 
 ### Parse args
 
@@ -52,4 +53,4 @@ else
     tgt_db=$2
 fi
 
-mysqldump -u $user -p$pass -B $src_db | mysql -u $user -p$pass
+mysqldump -u "$user" -p"$pass" -B "$src_db" | mysql -u "$user" -p"$pass"
