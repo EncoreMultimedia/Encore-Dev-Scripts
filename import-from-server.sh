@@ -65,6 +65,10 @@ config:
 services:
   database:
     type: mariadb
+  pma:
+    type: phpmyadmin
+    hosts:
+      - database
 EOF
 
 cd public_html || exit
