@@ -1,21 +1,8 @@
 #!/usr/bin/env bash
 
-### Check dependencies
-
 my_needed_commands="mysql mysqldump"
 
-missing_counter=0
-for needed_command in $my_needed_commands; do
-  if ! hash "$needed_command" >/dev/null 2>&1; then
-    printf "Command not found in PATH: %s\n" "$needed_command" >&2
-    ((missing_counter++))
-  fi
-done
-
-if ((missing_counter > 0)); then
-  printf "%d required commands are missing in PATH, aborting\n" "$missing_counter" >&2
-  exit 1
-fi
+source "$(dirname $0)/_depcheck.inc"
 
 ### Parse args
 

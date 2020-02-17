@@ -64,6 +64,8 @@ fi
 #     fi
 # done
 
+read -rp "Enter project name (for lando; no punctuation): " projectname
+read -rp "Enter site type (CMS; e.g. drupal7): " sitetype
 read -rp "Enter GitHub username: " ghuser
 
 while : ; do
@@ -88,13 +90,15 @@ while : ; do
 done
 
 read -rp "Enter remote webroot (e.g. public_html): " webroot
-read -rp "Enter remote drush command [optional]: " remotedrush
+[[ $sitetype == drupal* ]] && read -rp "Enter remote drush command [optional]: " remotedrush
 read -rp "Enter remote SSH host: " remotehost
 read -rp "Enter GitHub repo (e.g. $ghuser/RepoName): " ghrepo
 read -rp "Enter remote SSH user: " sshuser
 read -rsp "Enter remote SSH password: " sshpass
 echo ""
 
+echo "projectname=$projectname" >> $PWD/$config_name
+echo "sitetype=$sitetype" >> $PWD/$config_name
 echo "ghuser=$ghuser" >> $PWD/$config_name
 echo "ghpass='$ghpass'" >> $PWD/$config_name
 echo "webroot=$webroot" >> $PWD/$config_name

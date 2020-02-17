@@ -1,23 +1,9 @@
 #!/bin/bash
 
+my_needed_commands="ssh sshpass scp"
+
+source "$(dirname $0)/_depcheck.inc"
 source "$(dirname $0)/_rfind.inc"
-
-### Check dependencies
-
-my_needed_commands="ssh sshpass"
-
-missing_counter=0
-for needed_command in $my_needed_commands; do
-    if ! [ -x "$(command -v $needed_command)" ]; then
-        echo "Dependency '$needed_command' not found." >&2
-        ((missing_counter++))
-    fi
-done
-
-if ((missing_counter > 0)); then
-    printf "%d required commands are missing. Aborting.\n" "$missing_counter" >&2
-    exit 1
-fi
 
 config_name=".enc"
 [ -n "$1" ] && config_name+="-$1"
@@ -34,7 +20,14 @@ elif [ -z "$webroot" ]; then
     exit 1
 fi
 
-[ -z "$remotedrush" ] && remotedrush=drush
+if [[ $sitetype == drupal* ]]; then
+    [ -z "$remotedrush" ] && remotedrush=drush
+    dumpcommand="$remotedrush sql-dump"
+else
+    echo "Only Drupal sites are currently supported. Aborting."
+    exit 1
+fi
+
 if [ -n "$1" ]; then
     envname=$1
 else
@@ -42,7 +35,7 @@ else
 fi
 
 echo "Getting database from $sshuser@$remotehost:$webroot ... "
-sshpass -e ssh "$sshuser@$remotehost" "cd $webroot;$remotedrush sql-dump | gzip > ../db-$envname.sql.gz"
+sshpass -e ssh "$sshuser@$remotehost" "cd $webroot;$dumpcommand | gzip > ../db-$envname.sql.gz"
 sshpass -e scp "$sshuser@$remotehost:db-$envname.sql.gz" "$(cd "$(dirname "$enc_path")"; pwd -P)"
 sshpass -e ssh "$sshuser@$remotehost" "rm db-$envname.sql.gz"
 echo "Saved to: $(cd "$(dirname "$enc_path")"; pwd -P)/db-$envname.sql.gz"

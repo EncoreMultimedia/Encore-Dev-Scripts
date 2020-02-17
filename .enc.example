@@ -1,3 +1,9 @@
+# Project name, for identification purposes
+projectname=myproject
+
+# what CMS are you using?
+sitetype=drupal7
+
 # GitHub username
 ghuser=
 

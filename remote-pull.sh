@@ -1,23 +1,9 @@
 #!/usr/bin/env bash
 
-source "$(dirname $0)/_rfind.inc"
-
-### Check dependencies
-
 my_needed_commands="ssh sshpass"
 
-missing_counter=0
-for needed_command in $my_needed_commands; do
-  if ! [ -x "$(command -v $needed_command)" ]; then
-    echo "Dependency '$needed_command' not found." >&2
-    ((missing_counter++))
-  fi
-done
-
-if ((missing_counter > 0)); then
-  printf "%d required commands are missing. Aborting.\n" "$missing_counter" >&2
-  exit 1
-fi
+source "$(dirname $0)/_depcheck.inc"
+source "$(dirname $0)/_rfind.inc"
 
 ### Parse args
 
