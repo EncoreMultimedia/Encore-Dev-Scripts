@@ -23,6 +23,7 @@ if [ -n "$repo" ]; then
             "Create in parent directory")
                 PWD="$(dirname "$(cd "$(dirname "$repo")"; pwd -P)")"
                 echo -e "Ok, going up to the parent directory.\n"
+                # TODO: check if another parent dir has a .git/
                 break ;;
             "Abort")
                 echo "Aborting. Run this command again from a directory outside of a Git repo." >&2

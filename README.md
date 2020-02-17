@@ -10,6 +10,9 @@ Scripts for devs to use on their local machines.
 - **SOURCE** (not run) the `install.bash` script, entering your password for
   `sudo` if needed.\
   (That just means type `source install.bash` from within the directory of this repo.)
+- **SOURCE** (not run) the `update.bash` script after pulling new changes from
+  this repo in order to inform the autocompletion in your current shell about
+  what changed.
 
 ## Usage
 This package creates a global command, `enc`, that can run the rest of the scripts
