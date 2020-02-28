@@ -3,9 +3,34 @@
 
 # shellcheck disable=SC2034
 my_needed_commands="ssh sshpass scp"
+install=""
 
 source "$(dirname "$0")/_depcheck.inc"
 source "$(dirname "$0")/_rfind.inc"
+
+### Parse args
+
+while getopts ':ih' OPT; do
+    case $OPT in
+        i )
+            install="/public_html" ;;
+        h )
+            echo "Usage:"
+            echo "    get-db [options] [env]"
+            echo ""
+            echo "Options:"
+            echo "    -i    Import db into Lando (must be running) after downloading"
+            echo ""
+            echo "Parameters:"
+            echo "    env   This is used to specify a configuration with a specific"
+            echo "              name, such as live, dev, staging, etc."
+            exit 0 ;;
+        \? )
+            echo "get-db: Invalid option: -$OPTARG" >&2
+            exit 1 ;;
+    esac
+done
+shift $((OPTIND -1))
 
 config_name=".enc"
 [ -n "$1" ] && config_name+="-$1"
@@ -38,6 +63,7 @@ fi
 
 echo "Getting database from $sshuser@$remotehost:$webroot ... "
 sshpass -e ssh "$sshuser@$remotehost" "cd $webroot;$dumpcommand | gzip > ../db-$envname.sql.gz"
-sshpass -e scp "$sshuser@$remotehost:db-$envname.sql.gz" "$(cd "$(dirname "$enc_path")" || exit; pwd -P)"
+sshpass -e scp "$sshuser@$remotehost:db-$envname.sql.gz" "$(cd "$(dirname "$enc_path")" || exit; pwd -P)$install"
 sshpass -e ssh "$sshuser@$remotehost" "rm db-$envname.sql.gz"
+[ -n "$install" ] && cd "$(cd "$(dirname "$enc_path")" || exit; pwd -P)$install" && lando db-import "db-$envname.sql.gz" && mv "db-$envname.sql.gz" ..
 echo "Saved to: $(cd "$(dirname "$enc_path")" || exit; pwd -P)/db-$envname.sql.gz"
