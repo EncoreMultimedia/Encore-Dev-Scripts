@@ -13,12 +13,6 @@ config_name=".enc"
 [ -n "$1" ] && config_name+="-$1"
 enc_path=$(_rfind "$config_name")
 
-if [ -n "$1" ]; then
-    envname=$1
-else
-    envname=live
-fi
-
 if [ -f "$enc_path" ]; then
     # Found credentials file so let user know and import those vars
     echo "Using configuration found at: $(cd "$(dirname "$enc_path")" || exit; pwd -P)/$(basename "$enc_path")"
@@ -28,6 +22,12 @@ elif [ -z "$webroot" ]; then
     echo "import-from-gh: Configuration file '$config_name' not found in any parent directory" >&2
     echo "import-from-gh: Required environment variables not set. Aborting." >&2
     exit 1
+fi
+
+if [ -n "$1" ]; then
+    envname=$1
+else
+    envname=live
 fi
 
 git clone "https://$ghuser:$ghpass@github.com/$ghrepo.git" public_html
@@ -42,8 +42,12 @@ if [[ $sitetype == drupal* ]]; then
     sudo sed -i '' -e "s/'\(password\)' => '.*',/'\1' => 'drupal7',/g" public_html/sites/default/settings.php
     sudo sed -i '' -e "s/'host' => '.*',/'host' => 'database',/" public_html/sites/default/settings.php
     sudo sed -i '' -e "s/\$cookie_domain/\/\/ \$cookie_domain/" public_html/sites/default/settings.php && echo "Settings modified."
+fi
 
+if [ -n "$1" ]; then
     enc get-db "$envname"
+else
+    enc get-db
 fi
 
 cd public_html || exit
