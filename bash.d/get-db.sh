@@ -35,10 +35,11 @@ shift $((OPTIND -1))
 config_name=".enc"
 [ -n "$1" ] && config_name+="-$1"
 enc_path=$(_rfind "$config_name")
+enc_path_parent=$(cd "$(dirname "$enc_path")" || exit; pwd -P)
 
 if [ -f "$enc_path" ]; then
     # Found credentials file so let user know and import those vars
-    echo "Using configuration found at: $(cd "$(dirname "$enc_path")" || exit; pwd -P)/$(basename "$enc_path")"
+    echo "Using configuration found at: $enc_path_parent/$(basename "$enc_path")"
     source "$enc_path"
 elif [ -z "$webroot" ]; then
     # Did not find credentials file and the vars aren't set
@@ -63,7 +64,7 @@ fi
 
 echo "Getting database from $sshuser@$remotehost:$webroot ... "
 sshpass -e ssh "$sshuser@$remotehost" "cd $webroot;$dumpcommand | gzip > ../db-$envname.sql.gz"
-sshpass -e scp "$sshuser@$remotehost:db-$envname.sql.gz" "$(cd "$(dirname "$enc_path")" || exit; pwd -P)$install"
+sshpass -e scp "$sshuser@$remotehost:db-$envname.sql.gz" "$enc_path_parent$install"
 sshpass -e ssh "$sshuser@$remotehost" "rm db-$envname.sql.gz"
-[ -n "$install" ] && cd "$(cd "$(dirname "$enc_path")" || exit; pwd -P)$install" && lando db-import "db-$envname.sql.gz" && mv "db-$envname.sql.gz" ..
-echo "Saved to: $(cd "$(dirname "$enc_path")" || exit; pwd -P)/db-$envname.sql.gz"
+[ -n "$install" ] && cd "$enc_path_parent$install" && lando db-import "db-$envname.sql.gz" && mv "db-$envname.sql.gz" ..
+echo "Saved to: $enc_path_parent/db-$envname.sql.gz"

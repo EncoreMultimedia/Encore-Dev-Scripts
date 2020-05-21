@@ -1,2 +1,0 @@
-wordlist="$(cd "$(dirname "$BASH_SOURCE")"; ls *.sh | sed 's|.*/||' | sed 's/\.sh$//')"
-complete -W "$wordlist" enc

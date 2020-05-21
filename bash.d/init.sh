@@ -6,6 +6,7 @@ config_name=".enc"
 [ -n "$1" ] && config_name+="-$1"
 
 repo=$(_rfind ".git/")
+repo_parent=$(cd "$(dirname "$repo")" || exit; pwd -P)
 
 if [ -n "$repo" ]; then
     echo "You are in a Git repository!"
@@ -17,11 +18,11 @@ if [ -n "$repo" ]; then
     select opt in "${options[@]}"; do
         case $opt in
             "Add to .gitignore")
-                printf "Great! I will add '%s' to %s/.gitignore when we're done.\n\n" "$config_name" "$(cd "$(dirname "$repo")" || exit; pwd -P)"
+                printf "Great! I will add '%s' to %s/.gitignore when we're done.\n\n" "$config_name" "$repo_parent"
                 add_gitignore="yes"
                 break ;;
             "Create in parent directory")
-                PWD="$(dirname "$(cd "$(dirname "$repo")" || exit; pwd -P)")"
+                PWD=$(cd "$(dirname "$repo_parent")" || exit; pwd -P)
                 echo -e "Ok, going up to the parent directory.\n"
                 # TODO: check if another parent dir has a .git/
                 break ;;
@@ -35,9 +36,9 @@ fi
 
 # As macOS bash doesn't support `read -i` which is needed below, we do this:
 if [ -f "$PWD/$config_name" ]; then
-    echo "File '$config_name' EXISTS and will be overwritten in: $(cd "$PWD" || exit; pwd -P)"
+    echo "File '$config_name' EXISTS and will be overwritten in: $PWD"
 else
-    echo "File '$config_name' will be created in: $(cd "$PWD" || exit; pwd -P)"
+    echo "File '$config_name' will be created in: $PWD"
 fi
 
 # while : ; do
@@ -90,28 +91,36 @@ while : ; do
     fi
 done
 
-read -rp "Enter remote webroot (e.g. public_html): " webroot
-[[ $sitetype == drupal* ]] && read -rp "Enter remote drush command [optional]: " remotedrush
+read -rp "Enter remote webroot [public_html]: " webroot
+[ -z "$webroot" ] && webroot=public_html
+
+if [[ $sitetype == drupal* ]]; then
+    read -rp "Enter remote drush command [drush]: " remotedrush
+    [ -z "$remotedrush" ] && remotedrush=drush
+fi
+
 read -rp "Enter remote SSH host: " remotehost
 read -rp "Enter GitHub repo (e.g. $ghuser/RepoName): " ghrepo
 read -rp "Enter remote SSH user: " sshuser
 read -rsp "Enter remote SSH password: " sshpass
 echo ""
 
-echo "projectname=$projectname" >> "$PWD/$config_name"
-echo "sitetype=$sitetype" >> "$PWD/$config_name"
-echo "ghuser=$ghuser" >> "$PWD/$config_name"
-echo "ghpass='$ghpass'" >> "$PWD/$config_name"
-echo "webroot=$webroot" >> "$PWD/$config_name"
-[ -n "$remotedrush" ] && echo "remotedrush='$remotedrush'" >> "$PWD/$config_name"
-echo "remotehost=$remotehost" >> "$PWD/$config_name"
-echo "ghrepo=$ghrepo" >> "$PWD/$config_name"
-echo "sshuser=$sshuser" >> "$PWD/$config_name"
-echo "export SSHPASS='$sshpass'" >> "$PWD/$config_name"
+{
+    echo "projectname=$projectname"
+    echo "sitetype=$sitetype"
+    echo "ghuser=$ghuser"
+    echo "ghpass='$ghpass'"
+    echo "webroot=$webroot"
+    [ -n "$remotedrush" ] && echo "remotedrush='$remotedrush'"
+    echo "remotehost=$remotehost"
+    echo "ghrepo=$ghrepo"
+    echo "sshuser=$sshuser"
+    echo "export SSHPASS='$sshpass'"
+} >> "$PWD/$config_name"
 
 echo "Configuration file written!"
 
 if [ -n "$add_gitignore" ]; then
     echo -e "\n$config_name" >> "$(dirname "$repo")/.gitignore"
-    printf ".gitignore updated in: %s\n" "$(cd "$(dirname "$repo")" || exit; pwd -P)"
+    printf ".gitignore updated in: %s\n" "$repo_parent"
 fi

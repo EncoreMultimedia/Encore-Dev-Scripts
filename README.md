@@ -1,18 +1,17 @@
 # Encore-Dev-Scripts
 Scripts for devs to use on their local machines.
 
+Supports bash and zsh environments.
+
 ## Installation
-- Clone this repo to your local machine, anywhere.
-- Oh, almost forgot. You will need SSHPass installed or else some of these
+- You will need SSHPass installed or else some of these
   will complain at you and act a fool.
   - Can't figure this one out on your own? Fine. This is the only hint you get.\
     `brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb`
-- **SOURCE** (not run) the `install.bash` script, entering your password for
-  `sudo` if needed.\
-  (That just means type `source install.bash` from within the directory of this repo.)
-- **SOURCE** (not run) the `update.bash` script after pulling new changes from
-  this repo in order to inform the autocompletion in your current shell about
-  what changed.
+- Clone this repo to your local machine, anywhere.
+- `cd` into the directory containing the cloned repo.
+- Run: `source install.sh` -- entering your computer account password if prompted.
+- You're done!
 
 ## Usage
 This package creates a global command, `enc`, that can run the rest of the scripts
