@@ -57,10 +57,12 @@ fi
 command="cd $webroot;git reset --hard HEAD;"
 command+="git pull 'https://$ghuser:$ghpass@github.com/$ghrepo.git';"
 
-[ -z "$remotedrush" ] && remotedrush=drush
-[ -n "$dcc" ] && command+="$remotedrush cc all;"
-[ -n "$dcr" ] && command+="$remotedrush cr;"
-[ -n "$updb" ] && command+="$remotedrush updb -y;"
+if [[ $sitetype == drupal* ]]; then
+    [ -z "$remotedrush" ] && remotedrush=drush
+    [ -n "$dcc" ] && command+="$remotedrush cc all;"
+    [ -n "$dcr" ] && command+="$remotedrush cr;"
+    [ -n "$updb" ] && command+="$remotedrush updb -y;"
+fi
 
 echo "Pulling latest code to $sshuser@$remotehost:$webroot ... "
 sshpass -e ssh "$sshuser@$remotehost" "$command"
