@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 self_dir=$(cd "$(dirname "$(stat -f %Y "$0")")" || exit; pwd -P)
-script_dir="$self_dir/bash.d/"
+script_dir="$self_dir/bash.d"
 
 #_enc_completions() {
 #    if [ ${#COMP_WORDS[@]} -gt 2 ]; then

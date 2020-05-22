@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # shellcheck disable=SC2154
 
 # shellcheck disable=SC2034
@@ -18,10 +18,13 @@ if [ -f "$enc_path" ]; then
     source "$enc_path"
 elif [ -z "$webroot" ]; then
     # Did not find credentials file and the vars aren't set
-    echo "ssh: Configuration file '$config_name' not found in any parent directory" >&2
-    echo "ssh: Required environment variables not set. Aborting." >&2
+    echo "remote-init: Configuration file '$config_name' not found in any parent directory" >&2
+    echo "remote-init: Required environment variables not set. Aborting." >&2
     exit 1
 fi
 
-echo "Connecting to $sshuser@$remotehost ... "
-sshpass -e ssh "$sshuser@$remotehost"
+command="cd $webroot;rm -rf *;git clone 'https://$ghuser:$ghpass@github.com/$ghrepo.git' .;"
+
+echo "Cloning repo into $sshuser@$remotehost:$webroot ... "
+sshpass -e ssh "$sshuser@$remotehost" "$command"
+echo "done!"

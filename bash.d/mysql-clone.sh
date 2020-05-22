@@ -3,7 +3,7 @@
 # shellcheck disable=SC2034
 my_needed_commands="mysql mysqldump"
 
-source "$(dirname "$0")/_depcheck.inc"
+source "$(dirname "$0")/includes/_depcheck.inc"
 
 ### Parse args
 
