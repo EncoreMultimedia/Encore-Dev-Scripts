@@ -1,5 +1,4 @@
-#!/bin/bash
-# shellcheck disable=SC2154
+#!/usr/bin/env bash
 
 source "$(dirname "$0")/functions/_depcheck.sh"
 source "$(dirname "$0")/functions/_rfind.sh"
