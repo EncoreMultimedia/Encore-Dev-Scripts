@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2154
 
-# shellcheck disable=SC2034
-my_needed_commands="ssh sshpass rsync scp sed git"
-
 source "$(dirname "$0")/includes/_depcheck.sh"
 source "$(dirname "$0")/functions/_rfind.sh"
+
+! _depcheck "ssh sshpass rsync scp sed git" && exit 1
 
 ### Let's go
 

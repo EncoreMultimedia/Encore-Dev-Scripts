@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC2034
-my_needed_commands="mysql mysqldump"
-
 source "$(dirname "$0")/includes/_depcheck.sh"
+
+! _depcheck "mysql mysqldump" && exit 1
 
 ### Parse args
 
