@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$(dirname "$0")/functions/_rfind.inc"
+source "$(dirname "$0")/functions/_rfind.sh"
 
 config_name=".enc"
 [ -n "$1" ] && config_name+="-$1"

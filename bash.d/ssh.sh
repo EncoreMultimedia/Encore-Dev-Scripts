@@ -4,8 +4,8 @@
 # shellcheck disable=SC2034
 my_needed_commands="ssh sshpass"
 
-source "$(dirname "$0")/includes/_depcheck.inc"
-source "$(dirname "$0")/functions/_rfind.inc"
+source "$(dirname "$0")/includes/_depcheck.sh"
+source "$(dirname "$0")/functions/_rfind.sh"
 
 config_name=".enc"
 [ -n "$1" ] && config_name+="-$1"

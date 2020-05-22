@@ -5,8 +5,8 @@
 my_needed_commands="ssh sshpass scp"
 install=""
 
-source "$(dirname "$0")/includes/_depcheck.inc"
-source "$(dirname "$0")/functions/_rfind.inc"
+source "$(dirname "$0")/includes/_depcheck.sh"
+source "$(dirname "$0")/functions/_rfind.sh"
 
 ### Parse args
 

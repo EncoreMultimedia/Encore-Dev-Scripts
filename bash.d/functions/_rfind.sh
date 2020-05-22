@@ -1,3 +1,6 @@
+#!/bin/bash
+# The shebang above is only there to enable the right linter.
+
 _rfind () {
     needle=$1
     cwd=$PWD
@@ -5,7 +8,7 @@ _rfind () {
 
     while : ; do
         if [ -e "$cwd/$needle" ]; then
-            echo $path/$needle
+            echo "$path/$needle"
             return 0
         fi
 
