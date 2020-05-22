@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$(dirname "$0")/includes/_depcheck.sh"
+source "$(dirname "$0")/functions/_depcheck.sh"
 
 ! _depcheck "mysql mysqldump" && exit 1
 

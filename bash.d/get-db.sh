@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2154
 
-source "$(dirname "$0")/includes/_depcheck.sh"
+source "$(dirname "$0")/functions/_depcheck.sh"
 source "$(dirname "$0")/functions/_rfind.sh"
 
 ! _depcheck "ssh sshpass scp" && exit 1
