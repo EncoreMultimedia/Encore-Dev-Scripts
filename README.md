@@ -29,6 +29,9 @@ for example, a live server, dev server, staging server, or whatever you want.
     Creates a `.enc` (or `.enc-$env`) configuration file in the directory
     where you run the script.\
     *See the `[env]` note above.*
+- `enc drush [env] [command]`\
+    Runs a `drush` command remotely (for Drupal sites) using the preconfigured credentials.\
+    *Requires a `.enc` config file to exist. See the `[env]` note above.*
 - `enc get-db [env]`\
     Downloads remote database to your machine as a .sql.gz file in the same
     directory as the config file (so as to be outside of git).\
@@ -42,6 +45,9 @@ for example, a live server, dev server, staging server, or whatever you want.
     Creates all the files needed to run the site on your local machine
     by copying them all from a remote server.\
     Run this inside a fresh project directory of your making.\
+    *Requires a `.enc` config file to exist. See the `[env]` note above.*
+- `enc please [env] [command]`\
+    Runs a `please` command remotely (for Statamic sites) using the preconfigured credentials.\
     *Requires a `.enc` config file to exist. See the `[env]` note above.*
 - `enc remote-pull [options] [env]`\
     Logs into a configured remote server for the project whose path you're in,

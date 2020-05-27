@@ -5,6 +5,30 @@ source "$(dirname "$0")/functions/_rfind.sh"
 
 ! _depcheck "ssh sshpass" && exit 1
 
+### Parse args
+
+while getopts ':c:h' OPT; do
+    case $OPT in
+        c )
+            runcmd=$OPTARG ;;
+        h )
+            echo "Usage:"
+            echo "    ssh [options] [env]"
+            echo ""
+            echo "Options:"
+            echo "    -c 'command'    Run a specific command over ssh"
+            echo ""
+            echo "Parameters:"
+            echo "    env   This is used to specify a configuration with a specific"
+            echo "              name, such as live, dev, staging, etc."
+            exit 0 ;;
+        \? )
+            echo "ssh: Invalid option: -$OPTARG" >&2
+            exit 1 ;;
+    esac
+done
+shift $((OPTIND -1))
+
 config_name=".enc"
 [ -n "$1" ] && config_name+="-$1"
 enc_path=$(_rfind "$config_name")
@@ -22,4 +46,8 @@ elif [ -z "$webroot" ]; then
 fi
 
 echo "Connecting to $sshuser@$remotehost ... "
-sshpass -e ssh "$sshuser@$remotehost"
+if [ -n "$runcmd" ]; then
+    sshpass -e ssh "$sshuser@$remotehost" "cd $webroot;$runcmd"
+else
+    sshpass -e ssh "$sshuser@$remotehost"
+fi
